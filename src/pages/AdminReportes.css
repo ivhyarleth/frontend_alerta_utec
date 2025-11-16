@@ -1,22 +1,165 @@
-.admin-reportes-content { padding: 40px 20px; max-width: 1600px; margin: 0 auto; }
-.admin-reportes-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.admin-reportes-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #231F20; font-family: 'Stag Sans', 'Calibri', sans-serif; }
-.title-historial { color: #00BFFF; }
-.reportes-table-container { overflow-x: auto; }
-.reportes-table { width: 100%; border-collapse: collapse; }
-.reportes-table thead { background: #00BFFF; color: white; }
-.reportes-table th { padding: 16px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid rgba(255,255,255,0.3); }
-.reportes-table th:last-child { border-right: none; }
-.reportes-table td { padding: 20px 16px; text-align: center; border-bottom: 1px solid #e0e0e0; color: #8F8F8F; font-size: 14px; }
-.reportes-table tbody tr:hover { background: #f8f9fa; }
-.urgencia-badge { padding: 8px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; display: inline-block; }
-.urgencia-alta { background: #EA4335; color: white; }
-.urgencia-media { background: #FBBC05; color: #231F20; }
-.urgencia-baja { background: #34A853; color: white; }
-.urgencia-critica { background: #9C27B0; color: white; }
-.trabajador-info { color: #8F8F8F; }
-.estatus-badge { padding: 8px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; display: inline-block; }
-.estatus-cerrado { background: #00BFFF; color: white; }
-.estatus-en-proceso { background: #FBBC05; color: #231F20; }
-.estatus-terminado { background: #34A853; color: white; }
-@media (max-width: 1200px) { .admin-reportes-content { padding: 20px 15px; } .reportes-table { font-size: 12px; } .reportes-table th, .reportes-table td { padding: 12px 8px; } }
+.admin-reportes-content { 
+  padding: 40px 20px; 
+  max-width: 1600px; 
+  margin: 0 auto; 
+}
+
+.admin-reportes-card { 
+  background: white; 
+  border-radius: 20px; 
+  padding: 40px; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+}
+
+.admin-reportes-title { 
+  font-size: 32px; 
+  font-weight: 700; 
+  margin-bottom: 30px; 
+  color: #231F20; 
+  font-family: 'Stag Sans', 'Calibri', sans-serif; 
+}
+
+.title-historial { 
+  color: #00BFFF; 
+}
+
+.reportes-table-container { 
+  overflow-x: auto; 
+}
+
+.reportes-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+.reportes-table thead { 
+  background: #34A853; 
+  color: white; 
+}
+
+.reportes-table th { 
+  padding: 16px; 
+  text-align: center; 
+  font-weight: 700; 
+  font-size: 13px; 
+  border-right: 1px solid rgba(255,255,255,0.3); 
+}
+
+.reportes-table th:last-child { 
+  border-right: none; 
+}
+
+.reportes-table td { 
+  padding: 20px 16px; 
+  text-align: center; 
+  border-bottom: 1px solid #e0e0e0; 
+  color: #8F8F8F; 
+  font-size: 14px; 
+}
+
+.reportes-table tbody tr:hover { 
+  background: #f0f8f5; 
+}
+
+.reporte-id-cell {
+  color: #00BFFF;
+  font-weight: 600;
+}
+
+.urgencia-badge { 
+  padding: 8px 24px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  font-size: 13px; 
+  display: inline-block; 
+}
+
+.urgencia-critica { 
+  background: #8B00FF; 
+  color: white; 
+}
+
+.urgencia-alta { 
+  background: #EA4335; 
+  color: white; 
+}
+
+.urgencia-media { 
+  background: #FBBC05; 
+  color: #231F20; 
+}
+
+.urgencia-baja { 
+  background: #34A853; 
+  color: white; 
+}
+
+.trabajador-info { 
+  color: #231F20; 
+  font-weight: 500;
+}
+
+.estatus-badge { 
+  padding: 8px 20px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  font-size: 13px; 
+  display: inline-block; 
+}
+
+.estatus-cerrado { 
+  background: #00BFFF; 
+  color: white; 
+}
+
+.estatus-en-proceso { 
+  background: #FBBC05; 
+  color: #231F20; 
+}
+
+.estatus-terminado { 
+  background: #34A853; 
+  color: white; 
+}
+
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #8F8F8F;
+}
+
+.error-message {
+  color: #EA4335;
+}
+
+.retry-button {
+  background: #00BFFF;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.retry-button:hover {
+  background: #0099CC;
+}
+
+@media (max-width: 1200px) { 
+  .admin-reportes-content { 
+    padding: 20px 15px; 
+  } 
+  
+  .reportes-table { 
+    font-size: 12px; 
+  } 
+  
+  .reportes-table th, 
+  .reportes-table td { 
+    padding: 12px 8px; 
+  } 
+}

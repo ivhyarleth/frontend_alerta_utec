@@ -1,22 +1,89 @@
+import { useState, useEffect } from 'react';
+import { listarReportes, mapTipoToFrontend, mapUrgenciaToFrontend } from '../services/api';
 import './AdminReportes.css';
 
-function AdminReportes() {
-  const reportes = [
-    {
-      id: 'IDXXXXXXX',
-      tipo: 'LIMPIEZA Y AMBIENTE',
-      ubicacion: 'Aula',
-      urgencia: 'ALTA',
-      trabajador: 'Trabajador 1',
-      estatus: 'Reporte Cerrado'
+const TRABAJADORES = [
+  { id: 'trabajador-001', nombre: 'Trabajador 1' },
+  { id: 'trabajador-002', nombre: 'Trabajador 2' },
+  { id: 'trabajador-003', nombre: 'Trabajador 3' }
+];
+
+function AdminReportes({ currentUser, navigateToDetalle }) {
+  const [reportes, setReportes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    cargarReportes();
+  }, []);
+
+  const cargarReportes = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      // Cargar reportes resueltos (cerrados)
+      const data = await listarReportes({ 
+        estado: 'resuelto',
+        orderBy: 'fecha',
+        limit: 100
+      });
+      setReportes(data.reportes || []);
+    } catch (err) {
+      console.error('Error cargando reportes:', err);
+      setError('Error al cargar historial: ' + err.message);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const getUrgenciaClass = (urgencia) => {
+    const map = {
+      'critica': 'urgencia-critica',
+      'alta': 'urgencia-alta',
+      'media': 'urgencia-media',
+      'baja': 'urgencia-baja'
+    };
+    return map[urgencia] || 'urgencia-media';
+  };
+
+  const getTrabajadorNombre = (trabajadorId) => {
+    if (!trabajadorId) return 'Sin asignar';
+    const trabajador = TRABAJADORES.find(t => t.id === trabajadorId);
+    return trabajador ? trabajador.nombre : trabajadorId;
+  };
+
+  const handleRowClick = (reporteId) => {
+    if (navigateToDetalle) {
+      navigateToDetalle(reporteId);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="admin-reportes-content">
+        <div className="admin-reportes-card">
+          <p className="loading-message">Cargando historial...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="admin-reportes-content">
+        <div className="admin-reportes-card">
+          <p className="error-message">{error}</p>
+          <button onClick={cargarReportes} className="retry-button">Reintentar</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="admin-reportes-content">
       <div className="admin-reportes-card">
         <h2 className="admin-reportes-title">
-          <span className="title-historial">HISTORIAL</span> DE REPORTES
+          <span className="title-historial">HISTORIAL</span> DE REPORTES DE INCIDENTES
         </h2>
 
         <div className="reportes-table-container">
@@ -32,22 +99,36 @@ function AdminReportes() {
               </tr>
             </thead>
             <tbody>
-              {reportes.map((reporte, index) => (
-                <tr key={index}>
-                  <td>{reporte.id}</td>
-                  <td>{reporte.tipo}</td>
-                  <td>{reporte.ubicacion}</td>
-                  <td>
-                    <span className="urgencia-badge urgencia-alta">{reporte.urgencia}</span>
-                  </td>
-                  <td>
-                    <span className="trabajador-info">{reporte.trabajador} ▼</span>
-                  </td>
-                  <td>
-                    <span className="estatus-badge estatus-cerrado">{reporte.estatus}</span>
+              {reportes.length === 0 ? (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '40px' }}>
+                    No hay reportes en el historial
                   </td>
                 </tr>
-              ))}
+              ) : (
+                reportes.map((reporte) => (
+                  <tr 
+                    key={reporte.reporte_id} 
+                    onClick={() => handleRowClick(reporte.reporte_id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <td className="reporte-id-cell">{reporte.reporte_id.substring(0, 8)}...</td>
+                    <td>{mapTipoToFrontend(reporte.tipo)}</td>
+                    <td>{reporte.ubicacion}</td>
+                    <td>
+                      <span className={`urgencia-badge ${getUrgenciaClass(reporte.nivel_urgencia)}`}>
+                        {mapUrgenciaToFrontend(reporte.nivel_urgencia)}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="trabajador-info">{getTrabajadorNombre(reporte.trabajador_asignado)}</span>
+                    </td>
+                    <td>
+                      <span className="estatus-badge estatus-cerrado">Reporte Cerrado</span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

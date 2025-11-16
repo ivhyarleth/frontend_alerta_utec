@@ -1,22 +1,204 @@
-.admin-dashboard-content { padding: 40px 20px; max-width: 1600px; margin: 0 auto; }
-.admin-dashboard-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.admin-dashboard-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #231F20; font-family: 'Stag Sans', 'Calibri', sans-serif; }
-.title-dashboard { color: #00BFFF; }
-.dashboard-table-container { overflow-x: auto; }
-.dashboard-table { width: 100%; border-collapse: collapse; }
-.dashboard-table thead { background: #00BFFF; color: white; }
-.dashboard-table th { padding: 16px; text-align: center; font-weight: 700; font-size: 13px; border-right: 1px solid rgba(255,255,255,0.3); }
-.dashboard-table th:last-child { border-right: none; }
-.dashboard-table td { padding: 20px 16px; text-align: center; border-bottom: 1px solid #e0e0e0; color: #8F8F8F; font-size: 14px; }
-.dashboard-table tbody tr:hover { background: #f8f9fa; }
-.urgencia-badge { padding: 8px 24px; border-radius: 6px; font-weight: 700; font-size: 13px; display: inline-block; }
-.urgencia-alta { background: #EA4335; color: white; }
-.urgencia-media { background: #FBBC05; color: #231F20; }
-.urgencia-baja { background: #34A853; color: white; }
-.trabajador-select { background: #f8f9fa; padding: 8px 16px; border-radius: 6px; display: inline-block; cursor: pointer; }
-.estatus-badge { padding: 8px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; display: inline-block; }
-.estatus-trabajador-llego { background: #FBBC05; color: #231F20; }
-.estatus-en-camino { background: #82E1FF; color: #231F20; }
-.estatus-terminado { background: #34A853; color: white; }
-.estatus-cerrado { background: #00BFFF; color: white; }
-@media (max-width: 1200px) { .admin-dashboard-content { padding: 20px 15px; } .dashboard-table { font-size: 12px; } .dashboard-table th, .dashboard-table td { padding: 12px 8px; } }
+.admin-dashboard-content { 
+  padding: 40px 20px; 
+  max-width: 1600px; 
+  margin: 0 auto; 
+}
+
+.admin-dashboard-card { 
+  background: white; 
+  border-radius: 20px; 
+  padding: 40px; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+}
+
+.admin-dashboard-title { 
+  font-size: 32px; 
+  font-weight: 700; 
+  margin-bottom: 30px; 
+  color: #231F20; 
+  font-family: 'Stag Sans', 'Calibri', sans-serif; 
+}
+
+.title-dashboard { 
+  color: #00BFFF; 
+}
+
+.dashboard-table-container { 
+  overflow-x: auto; 
+}
+
+.dashboard-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+.dashboard-table thead { 
+  background: #34A853; 
+  color: white; 
+}
+
+.dashboard-table th { 
+  padding: 16px; 
+  text-align: center; 
+  font-weight: 700; 
+  font-size: 13px; 
+  border-right: 1px solid rgba(255,255,255,0.3); 
+}
+
+.dashboard-table th:last-child { 
+  border-right: none; 
+}
+
+.dashboard-table td { 
+  padding: 20px 16px; 
+  text-align: center; 
+  border-bottom: 1px solid #e0e0e0; 
+  color: #8F8F8F; 
+  font-size: 14px; 
+}
+
+.dashboard-table tbody tr:hover { 
+  background: #f0f8f5; 
+}
+
+.reporte-id-cell {
+  color: #00BFFF;
+  font-weight: 600;
+}
+
+.urgencia-badge { 
+  padding: 8px 24px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  font-size: 13px; 
+  display: inline-block; 
+}
+
+.urgencia-critica { 
+  background: #8B00FF; 
+  color: white; 
+}
+
+.urgencia-alta { 
+  background: #EA4335; 
+  color: white; 
+}
+
+.urgencia-media { 
+  background: #FBBC05; 
+  color: #231F20; 
+}
+
+.urgencia-baja { 
+  background: #34A853; 
+  color: white; 
+}
+
+.trabajador-select { 
+  background: #f8f9fa; 
+  padding: 8px 16px; 
+  border-radius: 6px; 
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 13px;
+  color: #231F20;
+  font-weight: 500;
+}
+
+.trabajador-select:hover {
+  background: #e9ecef;
+}
+
+.trabajador-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.trabajador-asignado {
+  background: #e9ecef;
+  padding: 8px 16px;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: 500;
+  color: #231F20;
+}
+
+.estatus-badge { 
+  padding: 8px 20px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  font-size: 13px; 
+  display: inline-block; 
+}
+
+.estatus-pendiente {
+  background: #8F8F8F;
+  color: white;
+}
+
+.estatus-en-atencion {
+  background: #00BFFF;
+  color: white;
+}
+
+.estatus-en-camino { 
+  background: #82E1FF; 
+  color: #231F20; 
+}
+
+.estatus-trabajador-llego { 
+  background: #FBBC05; 
+  color: #231F20; 
+}
+
+.estatus-terminado { 
+  background: #34A853; 
+  color: white; 
+}
+
+.estatus-cerrado { 
+  background: #00BFFF; 
+  color: white; 
+}
+
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #8F8F8F;
+}
+
+.error-message {
+  color: #EA4335;
+}
+
+.retry-button {
+  background: #00BFFF;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+}
+
+.retry-button:hover {
+  background: #0099CC;
+}
+
+@media (max-width: 1200px) { 
+  .admin-dashboard-content { 
+    padding: 20px 15px; 
+  } 
+  
+  .dashboard-table { 
+    font-size: 12px; 
+  } 
+  
+  .dashboard-table th, 
+  .dashboard-table td { 
+    padding: 12px 8px; 
+  } 
+}

@@ -75,13 +75,17 @@ export const actualizarReporte = async (reporte_id, data) => {
 };
 
 // Asignar trabajador a reporte
-export const asignarReporte = async (reporte_id, trabajador_id) => {
+export const asignarReporte = async (reporte_id, trabajador_id, usuario_id = 'admin-001', rol = 'administrativo') => {
   const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}/asignar`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ trabajador_id })
+    body: JSON.stringify({ 
+      trabajador_id,
+      usuario_id,
+      rol
+    })
   });
   return handleResponse(response);
 };
@@ -186,6 +190,43 @@ export class WebSocketManager {
     if (this.ws) {
       this.ws.close();
       this.ws = null;
+    }
+  }
+
+  // Acciones de trabajador vía WebSocket
+  enviarEnCamino(reporte_id, trabajador_id, task_token, ubicacion) {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        action: 'enCamino',
+        reporte_id,
+        trabajador_id,
+        task_token,
+        ubicacion_trabajador: ubicacion
+      }));
+    }
+  }
+
+  enviarTrabajadorLlego(reporte_id, trabajador_id, task_token) {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        action: 'trabajadorLlego',
+        reporte_id,
+        trabajador_id,
+        task_token
+      }));
+    }
+  }
+
+  enviarTrabajoTerminado(reporte_id, trabajador_id, task_token, comentarios = '', imagenes_finales = []) {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        action: 'trabajoTerminado',
+        reporte_id,
+        trabajador_id,
+        task_token,
+        comentarios,
+        imagenes_finales
+      }));
     }
   }
 }
