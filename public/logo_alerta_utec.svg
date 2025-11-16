@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="lightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0BBFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00FFFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Sirena base -->
+  <ellipse cx="100" cy="160" rx="60" ry="15" fill="#00BFFF"/>
+  <!-- Cuerpo sirena -->
+  <path d="M 60 160 Q 60 120 100 100 Q 140 120 140 160 Z" fill="url(#lightGrad)"/>
+  <!-- Luz central -->
+  <circle cx="100" cy="120" r="20" fill="#FBBC05"/>
+  <!-- Rayos de luz -->
+  <path d="M 80 100 L 70 80 L 85 95 Z" fill="#FBBC05"/>
+  <path d="M 100 90 L 100 60 L 105 85 Z" fill="#FBBC05"/>
+  <path d="M 120 100 L 130 80 L 115 95 Z" fill="#FBBC05"/>
+</svg>

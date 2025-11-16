@@ -1,0 +1,266 @@
+.estudiante-reporte-content {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.estudiante-reporte-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.estudiante-reporte-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #231F20;
+  font-family: 'Stag Sans', 'Calibri', sans-serif;
+}
+
+.title-nuevo {
+  color: #00BFFF;
+}
+
+.estudiante-reporte-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #8F8F8F;
+  font-family: 'Calibri', sans-serif;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #231F20;
+  font-family: 'Calibri', sans-serif;
+}
+
+.radio-option input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #00BFFF;
+}
+
+.text-input,
+.select-input,
+.textarea-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #C8C8C8;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Calibri', sans-serif;
+  transition: border-color 0.3s ease;
+  background: #F8F8F8;
+  color: #8F8F8F;
+}
+
+.text-input:focus,
+.select-input:focus,
+.textarea-input:focus {
+  outline: none;
+  border-color: #00BFFF;
+  background: white;
+  color: #231F20;
+}
+
+.select-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FBBC05' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  padding-right: 45px;
+}
+
+.textarea-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Botones de Urgencia */
+.urgencia-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.urgencia-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 14px 20px;
+  border: 2px solid;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Stag Sans', 'Calibri', sans-serif;
+}
+
+.urgencia-baja {
+  background: white;
+  border-color: #34A853;
+  color: #34A853;
+}
+
+.urgencia-baja.active,
+.urgencia-baja:hover {
+  background: #34A853;
+  color: white;
+}
+
+.urgencia-media {
+  background: white;
+  border-color: #FBBC05;
+  color: #FBBC05;
+}
+
+.urgencia-media.active,
+.urgencia-media:hover {
+  background: #FBBC05;
+  color: #231F20;
+}
+
+.urgencia-alta {
+  background: white;
+  border-color: #EA4335;
+  color: #EA4335;
+}
+
+.urgencia-alta.active,
+.urgencia-alta:hover {
+  background: #EA4335;
+  color: white;
+}
+
+.urgencia-critica {
+  background: white;
+  border-color: #9C27B0;
+  color: #9C27B0;
+}
+
+.urgencia-critica.active,
+.urgencia-critica:hover {
+  background: #9C27B0;
+  color: white;
+}
+
+/* Botón Enviar */
+.enviar-button {
+  align-self: flex-end;
+  padding: 16px 80px;
+  background-color: #FBBC05;
+  border: 2px solid #231F20;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #231F20;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  font-family: 'Stag Sans', 'Calibri', sans-serif;
+}
+
+.enviar-button:hover {
+  background-color: #e6a800;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(251, 188, 5, 0.4);
+}
+
+.enviar-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .estudiante-reporte-content {
+    padding: 20px 15px;
+  }
+
+  .estudiante-reporte-card {
+    padding: 25px;
+  }
+
+  .estudiante-reporte-title {
+    font-size: 26px;
+  }
+
+  .urgencia-buttons {
+    flex-direction: column;
+  }
+
+  .urgencia-btn {
+    min-width: 100%;
+  }
+
+  .enviar-button {
+    width: 100%;
+  }
+}
+
+/* Mensajes de feedback */
+.mensaje {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 15px;
+  animation: slideIn 0.3s ease;
+}
+
+.mensaje.success {
+  background: #d4edda;
+  border: 2px solid #34A853;
+  color: #155724;
+}
+
+.mensaje.error {
+  background: #f8d7da;
+  border: 2px solid #EA4335;
+  color: #721c24;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.enviar-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.urgencia-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

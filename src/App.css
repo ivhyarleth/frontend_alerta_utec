@@ -1,0 +1,7 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { margin: 0; font-family: 'Calibri', 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+#root { width: 100%; min-height: 100vh; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #00BFFF; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #0099CC; }

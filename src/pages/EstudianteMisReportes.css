@@ -1,0 +1,55 @@
+.estudiante-mis-reportes-content { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+.estudiante-mis-reportes-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.estudiante-mis-reportes-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #231F20; font-family: 'Stag Sans', 'Calibri', sans-serif; }
+.title-historial { color: #00BFFF; }
+.reportes-list { display: flex; flex-direction: column; gap: 20px; }
+.reporte-item { display: flex; gap: 20px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 12px; transition: all 0.3s ease; }
+.reporte-item:hover { border-color: #00BFFF; box-shadow: 0 2px 10px rgba(0,191,255,0.1); }
+.reporte-id { color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; min-width: 130px; text-align: center; }
+.reporte-id.rojo { background: #EA4335; }
+.reporte-id.amarillo { background: #FBBC05; color: #231F20; }
+.reporte-id.verde { background: #34A853; }
+.reporte-details { flex: 1; display: flex; gap: 30px; align-items: center; }
+.reporte-info { display: flex; flex-direction: column; gap: 4px; }
+.info-label { font-size: 14px; color: #8F8F8F; }
+.info-value { font-size: 16px; font-weight: 600; color: #231F20; font-style: italic; }
+@media (max-width: 968px) { .estudiante-mis-reportes-content { padding: 20px 15px; } .reporte-item { flex-direction: column; } .reporte-id { width: 100%; } .reporte-details { flex-direction: column; gap: 15px; align-items: flex-start; } }
+
+.loading, .no-reportes {
+  text-align: center;
+  padding: 60px 20px;
+  color: #8F8F8F;
+  font-size: 18px;
+}
+
+.error-message {
+  background: #f8d7da;
+  border: 2px solid #EA4335;
+  color: #721c24;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.retry-button {
+  padding: 8px 16px;
+  background: #EA4335;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.retry-button:hover {
+  background: #c62828;
+  transform: translateY(-2px);
+}
+
+.reporte-id.morado {
+  background: #9C27B0;
+}
