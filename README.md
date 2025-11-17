@@ -1,24 +1,33 @@
-# Frontend - Sistema de Alertas UTEC 🏫🚨
+# Frontend - Alertas UTEC🚨
 
 Aplicación web frontend para la gestión de **reportes y alertas** dentro de la universidad.  
 Permite a **estudiantes**, **trabajadores** y **administradores** interactuar con el sistema según su rol.
 
 ---
 
+## 🌐 Demo en producción
+
+El proyecto está desplegado en **AWS Amplify**:
+
+👉 **Aplicación en línea:**  
+<https://main.d2ymifgoi0u6ku.amplifyapp.com>
+
+---
+
 ## 🧱 Tecnologías
 
-- **React** (componentes funcionales + hooks)
-- **JavaScript (ES6+)**
-- **CSS** (estilos en `App.css`)
-- Lógica de consumo de API centralizada en `src/services/api.js` (login, manejo de usuario, etc.)
+- **React**  
+- **JavaScript**  
+- **CSS**  
+- Consumo de API centralizado en `src/services/api.js`  
+- Despliegue en **AWS Amplify**
 
 ---
 
 ## 📂 Estructura del proyecto
 
 > La estructura exacta puede variar ligeramente, pero en general se organiza así:
-
-```bash
+```
 src/
 ├─ App.jsx
 ├─ App.css
@@ -38,146 +47,138 @@ src/
 │   └─ ReportePage.jsx
 └─ services/
     └─ api.js
-Componentes principales
-App.jsx
-Punto de entrada del frontend. Maneja:
+```
 
-Estado de sesión (isLoggedIn)
+### 🧩 Componentes principales
 
-Rol del usuario (userRole)
+**App.jsx**  
+Punto de entrada del frontend. Se encarga de:
 
-Vista actual (currentView)
+- Manejar el estado de sesión: `isLoggedIn`  
+- Guardar el rol del usuario: `userRole`  
+- Definir la vista actual: `currentView`  
+- Cambiar entre:  
+  - Login (`LoginPage`)  
+  - Registro (`RegisterPage`)  
+  - Vistas internas para cada rol (estudiante, trabajador, admin)  
 
-Conmutación entre Login, Registro y vistas internas según rol.
+**Layout.jsx**  
+Componente de diseño general de la aplicación:
 
-Layout.jsx
-Layout general de la app (header, navegación lateral o menú, botón de logout, etc.).
-Recibe:
+- Encabezado (header)  
+- Sección de navegación / menú  
+- Contenido principal  
+- Botón de cerrar sesión  
 
-onLogout
+Recibe como props:  
 
-userName
+- `onLogout`  
+- `userName`  
+- `userRole`  
+- `currentView`  
+- `setCurrentView`  
 
-userRole
+**services/api.js**  
+Módulo donde se centraliza la lógica de comunicación con el backend (por ejemplo, vía fetch o axios). Algunas funciones típicas:
 
-currentView
+- `obtenerToken`  
+- `obtenerUsuario`  
+- `eliminarToken`  
+- `eliminarUsuario`  
+- Otras funciones para manejar reportes, usuarios, etc.  
 
-setCurrentView
+En el entorno actual de pruebas, las funciones relacionadas con token pueden estar desactivadas en `App.jsx` para facilitar el testeo de las vistas.
 
-services/api.js
-Funciones para interactuar con el backend, por ejemplo:
+**ReportePage.jsx**  
+Página para visualizar el detalle de un reporte.  
+Está pensada para reutilizarse con distintos roles:
 
-obtenerToken
+- Estudiante: ver el detalle de un reporte que creó.  
+- Trabajador: revisar un reporte asignado.  
+- Administrador: ver el reporte con todas las acciones disponibles.  
 
-obtenerUsuario
+Suele ser llamada desde:
 
-eliminarToken
+- Listados de reportes (`EstudianteMisReportes`, `TrabajadorMisReportes`, `AdminReportes`)  
+- Vistas de detalle específicas como `AdminDetalle`.  
 
-eliminarUsuario
+---
 
-y otras llamadas HTTP según el backend.
+## 👥 Roles y vistas
 
-ReportePage.jsx
-Página para visualizar el detalle de un reporte específico (se puede reutilizar para estudiante, trabajador o admin).
-Normalmente se usa cuando desde alguna lista de reportes se selecciona uno y se quiere ver toda la información asociada.
+La aplicación muestra contenido diferente según el rol:
 
-👥 Roles y vistas
-La aplicación muestra vistas diferentes dependiendo del rol del usuario.
+### 1. Estudiante (ESTUDIANTE)
 
-1. Estudiante (ESTUDIANTE)
-Páginas asociadas:
+Páginas:
 
-EstudianteNuevoReporte.jsx
-Crear un nuevo reporte/alerta.
+- `EstudianteNuevoReporte.jsx`  
+  Crear un nuevo reporte/alerta.  
+- `EstudianteMisReportes.jsx`  
+  Ver la lista de reportes creados por el estudiante.  
+- `EstudianteSeguimiento.jsx`  
+  Ver el seguimiento/estado de los reportes (por ejemplo, en revisión, atendido, etc.).
 
-EstudianteMisReportes.jsx
-Listar y revisar los reportes creados por el estudiante.
+Fragmento de `App.jsx`:
 
-EstudianteSeguimiento.jsx
-Ver el seguimiento/estado de los reportes.
-
-En App.jsx, se controla así:
-
-jsx
-Copiar código
+```
 if (userRole === 'ESTUDIANTE') {
   if (currentView === 'nuevo') return <EstudianteNuevoReporte />;
   if (currentView === 'mis-reportes') return <EstudianteMisReportes />;
   if (currentView === 'seguimiento') return <EstudianteSeguimiento />;
   return <EstudianteNuevoReporte />;
 }
-2. Trabajador (TRABAJADOR)
-Páginas asociadas:
+```
 
-TrabajadorAsignaciones.jsx
-Ver y gestionar asignaciones de reportes.
+### 2. Trabajador (TRABAJADOR)
 
-TrabajadorMisReportes.jsx
-Listar los reportes gestionados por el trabajador.
+Páginas:
 
-En App.jsx:
+- `TrabajadorAsignaciones.jsx`  
+  Ver y gestionar las asignaciones de reportes del trabajador.  
+- `TrabajadorMisReportes.jsx`  
+  Listar los reportes que el trabajador ha atendido o tiene asociados.
 
-jsx
-Copiar código
+Fragmento de `App.jsx`:
+```
 if (userRole === 'TRABAJADOR') {
   if (currentView === 'asignaciones') return <TrabajadorAsignaciones />;
   if (currentView === 'mis-reportes') return <TrabajadorMisReportes />;
   return <TrabajadorAsignaciones />;
 }
-3. Administrador (ADMIN)
-Páginas asociadas:
 
-AdminDashboard.jsx
-Vista general / métricas / resumen de reportes.
+```
 
-AdminReportes.jsx
-Listado de reportes para administración.
+### 3. Administrador (ADMIN)
 
-AdminDetalle.jsx
-Detalle de un reporte específico, con opciones de gestión.
+Páginas:
 
-En App.jsx:
+- `AdminDashboard.jsx`  
+  Vista general del sistema: métricas, resúmenes, etc.  
+- `AdminReportes.jsx`  
+  Listado de todos los reportes, con filtros u opciones administrativas.  
+- `AdminDetalle.jsx`  
+  Vista detallada de un reporte concreto, con acciones administrativas (por ejemplo, reasignar, cambiar estado, etc.).
 
-jsx
-Copiar código
+Fragmento de `App.jsx`:
+```
 if (userRole === 'ADMIN') {
   if (currentView === 'dashboard') return <AdminDashboard />;
   if (currentView === 'reportes') return <AdminReportes />;
   if (currentView === 'detalle') return <AdminDetalle />;
   return <AdminDashboard />;
 }
-Detalle de reportes: ReportePage.jsx
-ReportePage.jsx se puede usar como una página compartida para mostrar detalles completos de un reporte:
 
-Información general del reporte (tipo, descripción, fecha, ubicación, etc.).
+```
 
-Estado actual y/o historial de cambios.
+---
 
-Acciones disponibles según el rol (por ejemplo, actualizar estado, agregar comentarios, etc.).
+## 🔐 Autenticación y flujo de sesión
 
-La navegación hacia ReportePage puede hacerse:
+Manejo básico en `App.jsx`:
 
-Desde EstudianteMisReportes (ver un reporte del estudiante).
+```
 
-Desde TrabajadorMisReportes o TrabajadorAsignaciones.
-
-Desde AdminReportes o AdminDetalle.
-
-La integración exacta depende de cómo se manejen las rutas o el estado (currentView + algún id de reporte).
-
-🔐 Autenticación y flujo de sesión
-IMPORTANTE: Actualmente el proyecto está configurado para NO validar tokens al inicio, para facilitar las pruebas de las vistas.
-
-En esta versión, en App.jsx:
-
-No se usa useEffect para leer token/usuario al cargar.
-
-Solo depende de handleLogin(role) que se ejecuta desde LoginPage.
-
-Ejemplo simplificado:
-
-jsx
-Copiar código
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [userRole, setUserRole] = useState('');
 const [currentView, setCurrentView] = useState('');
@@ -197,10 +198,7 @@ const handleLogin = (role) => {
     setCurrentView('dashboard');
   }
 };
-Logout solo limpia el estado en memoria:
 
-jsx
-Copiar código
 const handleLogout = () => {
   // eliminarToken();
   // eliminarUsuario();
@@ -209,17 +207,15 @@ const handleLogout = () => {
   setCurrentView('');
   setShowRegister(false);
 };
-Más adelante se puede reactivar la validación de tokens usando obtenerToken / obtenerUsuario si se quiere un flujo real con JWT.
+```
 
-🧪 Login y Registro
+### Login y Registro
 Si el usuario no está logueado, App.jsx muestra:
 
 LoginPage por defecto.
 
 RegisterPage si el usuario elige registrarse.
-
-jsx
-Copiar código
+```
 if (!isLoggedIn) {
   if (showRegister) {
     return (
@@ -237,3 +233,4 @@ if (!isLoggedIn) {
     />
   );
 }
+```
