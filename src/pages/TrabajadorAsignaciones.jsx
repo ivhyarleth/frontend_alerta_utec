@@ -37,15 +37,15 @@ function TrabajadorAsignaciones({ currentUser }) {
     try {
       setLoading(true);
       setError(null);
-      // Cargar reportes asignados al trabajador que no estén resueltos
+      // El backend automáticamente filtra por trabajador_asignado = usuario_id del token
       const data = await listarReportes({ 
         limit: 50
       });
-      // Filtrar reportes asignados a este trabajador
-      const reportesAsignados = (data.reportes || []).filter(
-        r => r.trabajador_asignado === currentUser.trabajadorId && r.estado !== 'resuelto'
+      // Filtrar solo reportes que no estén resueltos (el backend ya filtra por trabajador)
+      const reportesActivos = (data.reportes || []).filter(
+        r => r.estado !== 'resuelto' && r.estado !== 'cerrado'
       );
-      setReportes(reportesAsignados);
+      setReportes(reportesActivos);
     } catch (err) {
       console.error('Error cargando reportes:', err);
       setError('Error al cargar asignaciones: ' + err.message);

@@ -4,6 +4,99 @@
 const API_BASE_URL = 'https://ovgixvti60.execute-api.us-east-1.amazonaws.com/dev';
 const WS_BASE_URL  = 'wss://vwomh5is13.execute-api.us-east-1.amazonaws.com/dev';
 
+// ==================== AUTENTICACIÓN ====================
+
+// Gestión de tokens
+const TOKEN_KEY = 'auth_token';
+const USER_KEY = 'user_data';
+
+export const getToken = () => {
+  return localStorage.getItem(TOKEN_KEY);
+};
+
+export const getUser = () => {
+  const userData = localStorage.getItem(USER_KEY);
+  return userData ? JSON.parse(userData) : null;
+};
+
+export const setAuthData = (token, usuario) => {
+  localStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(USER_KEY, JSON.stringify(usuario));
+};
+
+export const clearAuthData = () => {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+};
+
+export const isAuthenticated = () => {
+  return !!getToken();
+};
+
+// Registrar usuario
+export const registrarUsuario = async (email, password, rol) => {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, rol })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Error al registrar usuario');
+  }
+  
+  return await response.json();
+};
+
+// Iniciar sesión
+export const loginUsuario = async (email, password) => {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Credenciales inválidas');
+  }
+  
+  const data = await response.json();
+  
+  // Guardar token y datos del usuario
+  setAuthData(data.token, data.usuario);
+  
+  return data;
+};
+
+// Helper para hacer peticiones autenticadas
+export const fetchAutenticado = async (url, options = {}) => {
+  const token = getToken();
+  if (!token) {
+    throw new Error('No autenticado. Por favor inicia sesión.');
+  }
+  
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+    ...options.headers
+  };
+  
+  const response = await fetch(url, {
+    ...options,
+    headers
+  });
+  
+  // Manejar sesión expirada
+  if (response.status === 401) {
+    clearAuthData();
+    throw new Error('Sesión expirada. Por favor inicia sesión nuevamente.');
+  }
+  
+  return response;
+};
+
 // Helper para manejar respuestas
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -15,20 +108,15 @@ const handleResponse = async (response) => {
 
 // ==================== REPORTES ====================
 
-// Crear nuevo reporte
+// Crear nuevo reporte (requiere autenticación)
 export const crearReporte = async (data) => {
-  const response = await fetch(`${API_BASE_URL}/reportes`, {
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify({
-      usuario_id: data.usuario_id || 'estudiante-001',
       tipo: data.tipo,
       ubicacion: data.ubicacion,
       descripcion: data.descripcion,
       nivel_urgencia: data.nivel_urgencia,
-      rol: data.rol || 'estudiante',
       imagenes: data.imagenes || [],
       videos: data.videos || []
     })
@@ -36,7 +124,7 @@ export const crearReporte = async (data) => {
   return handleResponse(response);
 };
 
-// Listar reportes (con filtros opcionales)
+// Listar reportes (autenticación opcional)
 export const listarReportes = async (filtros = {}) => {
   const params = new URLSearchParams();
   
@@ -44,69 +132,73 @@ export const listarReportes = async (filtros = {}) => {
   if (filtros.estado) params.append('estado', filtros.estado);
   if (filtros.tipo) params.append('tipo', filtros.tipo);
   if (filtros.nivel_urgencia) params.append('nivel_urgencia', filtros.nivel_urgencia);
+  if (filtros.orderBy) params.append('orderBy', filtros.orderBy);
   if (filtros.limit) params.append('limit', filtros.limit);
   if (filtros.lastKey) params.append('lastKey', filtros.lastKey);
   
   const url = `${API_BASE_URL}/reportes${params.toString() ? '?' + params.toString() : ''}`;
+  
+  // Intentar con autenticación si hay token
+  if (isAuthenticated()) {
+    const response = await fetchAutenticado(url);
+    return handleResponse(response);
+  }
+  
+  // Sin autenticación (fallback)
   const response = await fetch(url);
   return handleResponse(response);
 };
 
-// Visualizar un reporte específico
+// Visualizar un reporte específico (requiere autenticación)
 export const visualizarReporte = async (reporte_id) => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}`);
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}`);
   return handleResponse(response);
 };
 
-// Obtener reporte completo (con estados e historial)
+// Obtener reporte completo (requiere autenticación)
 export const obtenerReporteCompleto = async (reporte_id) => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}/completo`);
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}/completo`);
   return handleResponse(response);
 };
 
-// Actualizar reporte
+// Actualizar reporte (requiere autenticación)
 export const actualizarReporte = async (reporte_id, data) => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}`, {
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(data)
   });
   return handleResponse(response);
 };
 
-// Asignar trabajador a reporte
-export const asignarReporte = async (reporte_id, trabajador_id, usuario_id = 'admin-001', rol = 'administrativo') => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}/asignar`, {
+// Asignar trabajador a reporte (requiere autenticación y rol administrativo)
+export const asignarReporte = async (reporte_id, trabajador_id) => {
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}/asignar`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ 
-      trabajador_id,
-      usuario_id,
-      rol
-    })
+    body: JSON.stringify({ trabajador_id })
   });
   return handleResponse(response);
 };
 
-// Cerrar reporte
-export const cerrarReporte = async (reporte_id, comentarios = '') => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}/cerrar`, {
+// Cerrar reporte (requiere autenticación y rol administrativo)
+export const cerrarReporte = async (reporte_id, notes = '') => {
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}/cerrar`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ comentarios })
+    body: JSON.stringify({ notes })
   });
   return handleResponse(response);
 };
 
-// Obtener historial de un reporte
+// Obtener historial de un reporte (requiere autenticación)
 export const obtenerHistorial = async (reporte_id) => {
-  const response = await fetch(`${API_BASE_URL}/reportes/${reporte_id}/historial`);
+  const response = await fetchAutenticado(`${API_BASE_URL}/reportes/${reporte_id}/historial`);
+  return handleResponse(response);
+};
+
+// ==================== USUARIOS ====================
+
+// Listar trabajadores (requiere autenticación y rol administrativo)
+export const listarTrabajadores = async () => {
+  const response = await fetchAutenticado(`${API_BASE_URL}/usuarios/trabajadores`);
   return handleResponse(response);
 };
 
@@ -120,6 +212,11 @@ export class WebSocketManager {
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 5;
     this.reconnectDelay = 1000;
+    this.token = getToken();
+    
+    if (!this.token) {
+      throw new Error('Token JWT requerido para conectar WebSocket');
+    }
     
     // Callbacks
     this.onEstadoUpdate = null;
@@ -131,10 +228,13 @@ export class WebSocketManager {
 
   connect() {
     const params = new URLSearchParams();
-    if (this.reporte_id) params.append('reporte_id', this.reporte_id);
-    if (this.usuario_id) params.append('usuario_id', this.usuario_id);
     
-    const url = `${WS_BASE_URL}${params.toString() ? '?' + params.toString() : ''}`;
+    // Token es obligatorio
+    params.append('token', this.token);
+    
+    if (this.reporte_id) params.append('reporte_id', this.reporte_id);
+    
+    const url = `${WS_BASE_URL}?${params.toString()}`;
     
     this.ws = new WebSocket(url);
     
@@ -183,7 +283,8 @@ export class WebSocketManager {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
         action: 'obtenerEstados',
-        reporte_id: reporte_id
+        reporte_id: reporte_id,
+        token: this.token
       }));
     }
   }
@@ -200,6 +301,7 @@ export class WebSocketManager {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
         action: 'enCamino',
+        token: this.token,
         reporte_id,
         trabajador_id,
         task_token,
@@ -212,6 +314,7 @@ export class WebSocketManager {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
         action: 'trabajadorLlego',
+        token: this.token,
         reporte_id,
         trabajador_id,
         task_token
@@ -223,6 +326,7 @@ export class WebSocketManager {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify({
         action: 'trabajoTerminado',
+        token: this.token,
         reporte_id,
         trabajador_id,
         task_token,

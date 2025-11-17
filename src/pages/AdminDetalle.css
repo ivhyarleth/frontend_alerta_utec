@@ -12,7 +12,7 @@
 }
 
 .admin-detalle-title {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 30px;
   color: #231F20;
@@ -93,20 +93,26 @@
 .info-label {
   font-weight: 600;
   color: #231F20;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .info-value {
   color: #8F8F8F;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .urgencia-badge {
   padding: 8px 24px;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.urgencia-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .urgencia-critica {
@@ -136,7 +142,7 @@
 }
 
 .historial-subtitle {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   color: #231F20;
   margin-bottom: 16px;
@@ -155,6 +161,13 @@
   background: #f8f9fa;
   border-radius: 8px;
   border-left: 4px solid #00BFFF;
+  transition: all 0.3s ease;
+}
+
+.historial-item:hover {
+  background: #e9ecef;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .historial-fecha {
@@ -166,13 +179,13 @@
 .historial-accion {
   color: #231F20;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   min-width: 120px;
 }
 
 .historial-notas {
   color: #8F8F8F;
-  font-size: 14px;
+  font-size: 15px;
   flex: 1;
 }
 
@@ -197,10 +210,13 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 16px;
+  transition: all 0.3s ease;
 }
 
 .retry-button:hover {
   background: #0099CC;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
 }
 
 @media (max-width: 1024px) {

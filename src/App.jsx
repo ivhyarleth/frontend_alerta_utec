@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { getUser, clearAuthData } from './services/api';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import EstudianteNuevoReporte from './pages/EstudianteNuevoReporte';
 import EstudianteMisReportes from './pages/EstudianteMisReportes';
 import EstudianteSeguimiento from './pages/EstudianteSeguimiento';
@@ -15,6 +17,7 @@ function App() {
   const [userRole, setUserRole] = useState('');
   const [currentView, setCurrentView] = useState('');
   const [selectedReporteId, setSelectedReporteId] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     userId: '',
     role: '',
@@ -22,40 +25,61 @@ function App() {
     nombre: ''
   });
 
-  const handleLogin = (role) => {
+  // Verificar sesión existente al cargar
+  useEffect(() => {
+    const user = getUser();
+    if (user) {
+      // Mapear rol del backend al frontend
+      const roleMap = {
+        'estudiante': 'ESTUDIANTE',
+        'trabajador': 'TRABAJADOR',
+        'administrativo': 'ADMIN'
+      };
+      const frontendRole = roleMap[user.rol] || 'ESTUDIANTE';
+      handleLogin(frontendRole, user);
+    }
+  }, []);
+
+  const handleLogin = (role, userData = null) => {
     console.log('Login con rol:', role);
     setIsLoggedIn(true);
     setUserRole(role);
     
-    // Configurar usuario según rol
+    // Obtener datos del usuario desde localStorage si no se pasan
+    const user = userData || getUser();
+    
+    // Configurar usuario según rol y datos del backend
     if (role === 'ESTUDIANTE') {
       setCurrentUser({
-        userId: 'estudiante-001',
-        role: 'estudiante',
+        userId: user?.usuario_id || 'estudiante-001',
+        role: user?.rol || 'estudiante',
         trabajadorId: '',
-        nombre: 'ESTUDIANTE'
+        nombre: user?.email || 'ESTUDIANTE'
       });
       setCurrentView('nuevo');
     } else if (role === 'TRABAJADOR') {
       setCurrentUser({
-        userId: 'trabajador-001',
-        role: 'trabajador',
-        trabajadorId: 'trabajador-001',
-        nombre: 'COLABORADOR'
+        userId: user?.usuario_id || 'trabajador-001',
+        role: user?.rol || 'trabajador',
+        trabajadorId: user?.usuario_id || 'trabajador-001',
+        nombre: user?.email || 'COLABORADOR'
       });
       setCurrentView('asignaciones');
     } else if (role === 'ADMIN') {
       setCurrentUser({
-        userId: 'admin-001',
-        role: 'administrativo',
+        userId: user?.usuario_id || 'admin-001',
+        role: user?.rol || 'administrativo',
         trabajadorId: '',
-        nombre: 'ADMIN'
+        nombre: user?.email || 'ADMIN'
       });
       setCurrentView('dashboard');
     }
   };
 
   const handleLogout = () => {
+    // Limpiar datos de autenticación
+    clearAuthData();
+    
     setIsLoggedIn(false);
     setUserRole('');
     setCurrentView('');
@@ -114,7 +138,20 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    return <LoginPage onLogin={handleLogin} />;
+    if (showRegister) {
+      return (
+        <RegisterPage 
+          onRegister={handleLogin}
+          onBackToLogin={() => setShowRegister(false)}
+        />
+      );
+    }
+    return (
+      <LoginPage 
+        onLogin={handleLogin} 
+        onRegister={() => setShowRegister(true)}
+      />
+    );
   }
 
   return (

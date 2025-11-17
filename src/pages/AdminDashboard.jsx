@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
-import { listarReportes, asignarReporte, WebSocketManager, mapTipoToFrontend, mapUrgenciaToFrontend } from '../services/api';
+import { listarReportes, listarTrabajadores, asignarReporte, WebSocketManager, mapTipoToFrontend, mapUrgenciaToFrontend } from '../services/api';
 import './AdminDashboard.css';
-
-const TRABAJADORES = [
-  { id: 'trabajador-001', nombre: 'Trabajador 1' },
-  { id: 'trabajador-002', nombre: 'Trabajador 2' },
-  { id: 'trabajador-003', nombre: 'Trabajador 3' }
-];
 
 function AdminDashboard({ currentUser, navigateToDetalle }) {
   const [reportes, setReportes] = useState([]);
+  const [trabajadores, setTrabajadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [asignando, setAsignando] = useState({});
@@ -17,6 +12,7 @@ function AdminDashboard({ currentUser, navigateToDetalle }) {
 
   useEffect(() => {
     cargarReportes();
+    cargarTrabajadores();
     
     // Conectar WebSocket para actualizaciones en tiempo real
     const ws = new WebSocketManager(null, currentUser.userId);
@@ -53,6 +49,17 @@ function AdminDashboard({ currentUser, navigateToDetalle }) {
       setError('Error al cargar reportes: ' + err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const cargarTrabajadores = async () => {
+    try {
+      const data = await listarTrabajadores();
+      setTrabajadores(data.trabajadores || []);
+    } catch (err) {
+      console.error('Error cargando trabajadores:', err);
+      // No mostramos error crítico, solo log
+      // El admin puede seguir viendo reportes aunque falle la carga de trabajadores
     }
   };
 
@@ -118,8 +125,13 @@ function AdminDashboard({ currentUser, navigateToDetalle }) {
   };
 
   const getTrabajadorNombre = (trabajadorId) => {
-    const trabajador = TRABAJADORES.find(t => t.id === trabajadorId);
-    return trabajador ? trabajador.nombre : 'Sin asignar';
+    if (!trabajadorId) return 'Sin asignar';
+    const trabajador = trabajadores.find(t => t.usuario_id === trabajadorId);
+    if (trabajador) {
+      // Mostrar email o usuario_id corto
+      return trabajador.email.split('@')[0]; // Parte antes del @
+    }
+    return trabajadorId.substring(0, 12); // Fallback: mostrar ID corto
   };
 
   if (loading) {
@@ -190,12 +202,14 @@ function AdminDashboard({ currentUser, navigateToDetalle }) {
                           className="trabajador-select"
                           defaultValue="sin-asignar"
                           onChange={(e) => handleAsignarTrabajador(reporte.reporte_id, e.target.value, reporte.fecha_creacion)}
-                          disabled={asignando[reporte.reporte_id]}
+                          disabled={asignando[reporte.reporte_id] || trabajadores.length === 0}
                         >
-                          <option value="sin-asignar">Sin asignar ▼</option>
-                          {TRABAJADORES.map(trabajador => (
-                            <option key={trabajador.id} value={trabajador.id}>
-                              {trabajador.nombre}
+                          <option value="sin-asignar">
+                            {trabajadores.length === 0 ? 'Cargando...' : 'Sin asignar ▼'}
+                          </option>
+                          {trabajadores.map(trabajador => (
+                            <option key={trabajador.usuario_id} value={trabajador.usuario_id}>
+                              {trabajador.email}
                             </option>
                           ))}
                         </select>

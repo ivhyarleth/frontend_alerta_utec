@@ -12,7 +12,7 @@
 }
 
 .admin-dashboard-title { 
-  font-size: 32px; 
+  font-size: 36px; 
   font-weight: 700; 
   margin-bottom: 30px; 
   color: #231F20; 
@@ -41,7 +41,7 @@
   padding: 16px; 
   text-align: center; 
   font-weight: 700; 
-  font-size: 13px; 
+  font-size: 15px; 
   border-right: 1px solid rgba(255,255,255,0.3); 
 }
 
@@ -54,11 +54,18 @@
   text-align: center; 
   border-bottom: 1px solid #e0e0e0; 
   color: #8F8F8F; 
-  font-size: 14px; 
+  font-size: 15px; 
+  transition: all 0.2s ease;
+}
+
+.dashboard-table tbody tr { 
+  transition: all 0.3s ease;
 }
 
 .dashboard-table tbody tr:hover { 
   background: #f0f8f5; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
 }
 
 .reporte-id-cell {
@@ -70,8 +77,14 @@
   padding: 8px 24px; 
   border-radius: 6px; 
   font-weight: 700; 
-  font-size: 13px; 
+  font-size: 14px; 
   display: inline-block; 
+  transition: all 0.2s ease;
+}
+
+.urgencia-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .urgencia-critica { 
@@ -100,13 +113,17 @@
   border-radius: 6px; 
   border: 1px solid #ddd;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   color: #231F20;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .trabajador-select:hover {
   background: #e9ecef;
+  border-color: #00BFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .trabajador-select:disabled {
@@ -127,8 +144,14 @@
   padding: 8px 20px; 
   border-radius: 6px; 
   font-weight: 700; 
-  font-size: 13px; 
+  font-size: 14px; 
   display: inline-block; 
+  transition: all 0.2s ease;
+}
+
+.estatus-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .estatus-pendiente {
@@ -182,10 +205,13 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 16px;
+  transition: all 0.3s ease;
 }
 
 .retry-button:hover {
   background: #0099CC;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
 }
 
 @media (max-width: 1200px) { 

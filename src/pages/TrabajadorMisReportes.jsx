@@ -15,16 +15,13 @@ function TrabajadorMisReportes({ currentUser }) {
     try {
       setLoading(true);
       setError(null);
-      // Cargar reportes del trabajador (todos los estados)
+      // El backend automáticamente filtra por trabajador_asignado = usuario_id del token
+      // Aquí obtenemos TODOS los reportes asignados a este trabajador (incluyendo resueltos)
       const data = await listarReportes({ 
         orderBy: 'fecha',
         limit: 100
       });
-      // Filtrar reportes del trabajador
-      const misReportes = (data.reportes || []).filter(
-        r => r.trabajador_asignado === currentUser.trabajadorId
-      );
-      setReportes(misReportes);
+      setReportes(data.reportes || []);
     } catch (err) {
       console.error('Error cargando reportes:', err);
       setError('Error al cargar historial: ' + err.message);

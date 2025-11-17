@@ -1,15 +1,40 @@
 import { useState } from 'react';
+import { loginUsuario } from '../services/api';
 import './LoginPage.css';
 
-function LoginPage({ onLogin }) {
+function LoginPage({ onLogin, onRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState('ESTUDIANTE');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onLogin(role);
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Intentar login con el backend
+      const data = await loginUsuario(email, password);
+      
+      // Mapear rol del backend a rol del frontend
+      const roleMap = {
+        'estudiante': 'ESTUDIANTE',
+        'trabajador': 'TRABAJADOR',
+        'administrativo': 'ADMIN'
+      };
+      
+      const frontendRole = roleMap[data.usuario.rol] || 'ESTUDIANTE';
+      
+      // Llamar al callback con el rol mapeado
+      onLogin(frontendRole);
+    } catch (err) {
+      console.error('Error en login:', err);
+      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,6 +59,19 @@ function LoginPage({ onLogin }) {
         <div className="login-form-container">
           <h2 className="welcome-text">¡Bienvenido de nuevo!</h2>
           
+          {error && (
+            <div className="error-message" style={{ 
+              background: '#fee', 
+              color: '#c33', 
+              padding: '12px', 
+              borderRadius: '8px', 
+              marginBottom: '16px',
+              textAlign: 'center'
+            }}>
+              {error}
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
               <input
@@ -43,6 +81,7 @@ function LoginPage({ onLogin }) {
                 onChange={(e) => setEmail(e.target.value)}
                 className="form-input"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -55,58 +94,28 @@ function LoginPage({ onLogin }) {
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-input"
                   required
+                  disabled={loading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="password-toggle"
                   aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  disabled={loading}
                 >
                   {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
 
-            <div className="form-group">
-              <label className="role-label">ROL:</label>
-              <div className="radio-group">
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="ESTUDIANTE"
-                    checked={role === 'ESTUDIANTE'}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  <span className="radio-text">ESTUDIANTE</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="TRABAJADOR"
-                    checked={role === 'TRABAJADOR'}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  <span className="radio-text">TRABAJADOR</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="role"
-                    value="ADMIN"
-                    checked={role === 'ADMIN'}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  <span className="radio-text">ADMIN</span>
-                </label>
-              </div>
-            </div>
-
-            <button type="submit" className="submit-button">
-              Iniciar sesión
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? 'INGRESANDO...' : 'INGRESAR'}
             </button>
           </form>
+          
+          <div className="register-link">
+            ¿Aún no tienes cuenta? <button onClick={onRegister} className="link-button">Regístrate aquí</button>
+          </div>
         </div>
       </div>
     </div>
