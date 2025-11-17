@@ -1,12 +1,14 @@
-// Configuración de la API
-const API_BASE_URL = 'https://iufx6tx21g.execute-api.us-east-1.amazonaws.com/dev';
-const WS_BASE_URL = 'wss://z7unrfb2ub.execute-api.us-east-1.amazonaws.com/dev';
+// ==================== CONFIGURACIÓN DE LA API ====================
+
+// ⚠️ NUEVAS URLs DESPUÉS DEL ÚLTIMO sls deploy
+const API_BASE_URL = 'https://ovgixvti60.execute-api.us-east-1.amazonaws.com/dev';
+const WS_BASE_URL  = 'wss://vwomh5is13.execute-api.us-east-1.amazonaws.com/dev';
 
 // Helper para manejar respuestas
 const handleResponse = async (response) => {
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Error desconocido' }));
-    throw new Error(error.error || `HTTP ${response.status}`);
+    throw new Error(error.error || error.message || `HTTP ${response.status}`);
   }
   return response.json();
 };
@@ -233,7 +235,6 @@ export class WebSocketManager {
 
 // ==================== MAPEO DE DATOS ====================
 
-// Mapear urgencia del frontend al backend
 export const mapUrgenciaToBackend = (urgencia) => {
   const map = {
     'BAJA': 'baja',
@@ -244,7 +245,6 @@ export const mapUrgenciaToBackend = (urgencia) => {
   return map[urgencia] || 'media';
 };
 
-// Mapear urgencia del backend al frontend
 export const mapUrgenciaToFrontend = (urgencia) => {
   const map = {
     'baja': 'BAJA',
@@ -255,7 +255,6 @@ export const mapUrgenciaToFrontend = (urgencia) => {
   return map[urgencia] || 'MEDIA';
 };
 
-// Mapear tipo de incidente
 export const mapTipoIncidente = (tipo) => {
   const map = {
     'INFRAESTRUCTUCTURA Y SERVICIOS': 'mantenimiento',
@@ -267,7 +266,6 @@ export const mapTipoIncidente = (tipo) => {
   return map[tipo] || 'otro';
 };
 
-// Mapear tipo del backend al frontend
 export const mapTipoToFrontend = (tipo) => {
   const map = {
     'mantenimiento': 'INFRAESTRUCTUCTURA Y SERVICIOS',

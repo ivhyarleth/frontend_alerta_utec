@@ -50,7 +50,7 @@ function LoginPage({ onLogin }) {
               <div className="password-wrapper">
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Contraseña maestra"
+                  placeholder="Contraseña"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-input"
@@ -60,8 +60,9 @@ function LoginPage({ onLogin }) {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="password-toggle"
+                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
-                  👁️
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>

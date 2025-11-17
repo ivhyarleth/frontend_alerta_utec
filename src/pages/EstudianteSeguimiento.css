@@ -1,22 +1,32 @@
-.estudiante-seguimiento-content { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
-.estudiante-seguimiento-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.estudiante-seguimiento-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #231F20; font-family: 'Stag Sans', 'Calibri', sans-serif; }
-.title-seguimiento { color: #00BFFF; }
-.seguimiento-list { display: flex; flex-direction: column; gap: 20px; }
-.seguimiento-item { display: flex; gap: 20px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 12px; transition: all 0.3s ease; align-items: flex-start; }
-.seguimiento-item:hover { border-color: #00BFFF; box-shadow: 0 2px 10px rgba(0,191,255,0.1); }
-.estado-badge { padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; color: white; white-space: nowrap; min-width: 160px; text-align: center; }
-.estado-cyan { background: #00BFFF; }
-.estado-naranja { background: #FBBC05; color: #231F20; }
-.estado-verde { background: #34A853; }
-.estado-azul { background: #00BFFF; }
-.seguimiento-details { flex: 1; display: flex; gap: 20px; align-items: center; }
-.seguimiento-id { background: #00BFFF; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; min-width: 120px; text-align: center; }
-.seguimiento-info-group { flex: 1; display: flex; gap: 30px; align-items: center; }
-.seguimiento-info { display: flex; flex-direction: column; gap: 4px; }
-.info-label { font-size: 14px; color: #8F8F8F; }
-.info-value { font-size: 16px; font-weight: 600; color: #231F20; font-style: italic; }
-@media (max-width: 968px) { .estudiante-seguimiento-content { padding: 20px 15px; } .estudiante-seguimiento-card { padding: 25px; } .estudiante-seguimiento-title { font-size: 26px; } .seguimiento-item { flex-direction: column; } .estado-badge, .seguimiento-id { width: 100%; } .seguimiento-details { flex-direction: column; width: 100%; } .seguimiento-info-group { flex-direction: column; gap: 15px; align-items: flex-start; width: 100%; } }
+.estudiante-seguimiento-content {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.estudiante-seguimiento-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Título */
+
+.estudiante-seguimiento-title {
+  font-size: 40px; /* antes 32px */
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #231F20;
+  font-family: 'Stag Sans', 'Calibri', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.title-seguimiento {
+  color: #00BFFF;
+}
+
+/* Header con estado WS */
 
 .header-with-status {
   display: flex;
@@ -28,11 +38,14 @@
 }
 
 .ws-status {
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 16px;  /* antes 14px */
+  font-weight: 700;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .ws-status.connected {
@@ -47,9 +60,183 @@
   border: 2px solid #EA4335;
 }
 
-.loading, .no-reportes {
+/* Lista de seguimiento */
+
+.seguimiento-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* antes 20px */
+}
+
+/* Tarjeta de cada reporte */
+
+.seguimiento-item {
+  display: flex;
+  gap: 24px; /* antes 20px */
+  padding: 22px 24px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  align-items: flex-start;
+  background: #f9fafb;
+}
+
+.seguimiento-item:hover {
+  border-color: #00BFFF;
+  box-shadow: 0 6px 18px rgba(0, 191, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Badge de estado (En camino, Trabajo Terminado, etc.) */
+
+.estado-badge {
+  padding: 12px 26px;
+  border-radius: 999px;           /* pill moderno */
+  font-weight: 800;
+  font-size: 18px;                /* antes 14px */
+  color: #ffffff;
+  white-space: nowrap;
+  min-width: 190px;               /* antes 160px */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Colores de estado */
+
+.estado-cyan {
+  background: linear-gradient(135deg, #00BFFF, #0080ff);
+}
+
+.estado-naranja {
+  background: linear-gradient(135deg, #ffb300, #f9a825);
+  color: #231F20;
+}
+
+.estado-verde {
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+
+.estado-azul {
+  background: linear-gradient(135deg, #1976d2, #0d47a1);
+}
+
+/* Bloque de detalles */
+
+.seguimiento-details {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* ID de reporte */
+
+.seguimiento-id {
+  background: #00BFFF;
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 18px;        /* antes 14px */
+  min-width: 140px;       /* antes 120px */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Grupo de info (tipo, desc, ubicación) */
+
+.seguimiento-info-group {
+  flex: 1;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.seguimiento-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Label pequeño (tipo, ubicación) */
+
+.info-label {
+  font-size: 18px;       /* antes 14px */
+  color: #8F8F8F;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Valor principal (descripción) */
+
+.info-value {
+  font-size: 22px;       /* antes 16px */
+  font-weight: 700;
+  color: #231F20;
+  font-style: italic;
+}
+
+/* Loading / vacío */
+
+.loading,
+.no-reportes {
   text-align: center;
   padding: 60px 20px;
   color: #8F8F8F;
-  font-size: 18px;
+  font-size: 22px;        /* antes 18px */
+}
+
+/* Responsive */
+
+@media (max-width: 968px) {
+  .estudiante-seguimiento-content {
+    padding: 20px 15px;
+  }
+
+  .estudiante-seguimiento-card {
+    padding: 28px;
+  }
+
+  .estudiante-seguimiento-title {
+    font-size: 30px;
+  }
+
+  .seguimiento-item {
+    flex-direction: column;
+  }
+
+  .estado-badge,
+  .seguimiento-id {
+    width: 100%;
+    text-align: left;
+  }
+
+  .seguimiento-details {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .seguimiento-info-group {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .info-label {
+    font-size: 16px;
+  }
+
+  .info-value {
+    font-size: 18px;
+  }
+
+  .ws-status {
+    font-size: 14px;
+  }
 }

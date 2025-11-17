@@ -58,14 +58,16 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 450px;
+  max-width: 600px;   /* más ancho para que entre el título en una línea */
 }
 
+/* Texto de bienvenida grande, en una sola línea */
 .welcome-text {
-  font-size: 32px;
+  font-size: 56px;    /* más grande pero razonable */
   font-weight: 700;
   color: #231F20;
   margin-bottom: 30px;
+  white-space: nowrap;  /* evita salto de línea en desktop */
 }
 
 .login-form {
@@ -80,12 +82,13 @@
   gap: 8px;
 }
 
+/* Texto dentro del input grande */
 .form-input {
   width: 100%;
-  padding: 16px 20px;
+  padding: 18px 22px;
   border: 2px solid #231F20;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 32px;
   font-family: 'Calibri', sans-serif;
   transition: all 0.3s ease;
   outline: none;
@@ -108,13 +111,13 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 22px;
   padding: 5px;
 }
 
 /* Role Selection */
 .role-label {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 600;
   color: #231F20;
   margin-bottom: 8px;
@@ -135,14 +138,14 @@
 }
 
 .radio-label input[type="radio"] {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
   accent-color: #00BFFF;
 }
 
 .radio-text {
-  font-size: 16px;
+  font-size: 28px;
   color: #231F20;
   font-weight: 500;
 }
@@ -150,11 +153,11 @@
 /* Submit Button */
 .submit-button {
   width: 100%;
-  padding: 16px 20px;
+  padding: 18px 22px;
   background-color: #FBBC05;
   border: 2px solid #231F20;
   border-radius: 25px;
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 700;
   color: #231F20;
   cursor: pointer;
@@ -196,8 +199,28 @@
     height: 60%;
   }
 
+  .login-form-container {
+    max-width: 100%;
+  }
+
   .welcome-text {
-    font-size: 28px;
+    font-size: 36px;
+    white-space: normal;   /* en pantallas chicas dejamos que pueda partir */
+  }
+
+  .form-input {
+    font-size: 18px;
+    padding: 16px 20px;
+  }
+
+  .role-label,
+  .radio-text {
+    font-size: 16px;
+  }
+
+  .submit-button {
+    font-size: 20px;
+    padding: 16px 20px;
   }
 }
 
@@ -212,12 +235,22 @@
   }
 
   .welcome-text {
-    font-size: 24px;
+    font-size: 32px;
+    white-space: normal;
   }
 
-  .form-input,
+  .form-input {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+
+  .role-label,
+  .radio-text {
+    font-size: 15px;
+  }
+
   .submit-button {
-    font-size: 14px;
+    font-size: 18px;
     padding: 14px 16px;
   }
 

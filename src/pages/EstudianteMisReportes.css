@@ -1,55 +1,196 @@
-.estudiante-mis-reportes-content { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
-.estudiante-mis-reportes-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.estudiante-mis-reportes-title { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #231F20; font-family: 'Stag Sans', 'Calibri', sans-serif; }
-.title-historial { color: #00BFFF; }
-.reportes-list { display: flex; flex-direction: column; gap: 20px; }
-.reporte-item { display: flex; gap: 20px; padding: 20px; border: 2px solid #e0e0e0; border-radius: 12px; transition: all 0.3s ease; }
-.reporte-item:hover { border-color: #00BFFF; box-shadow: 0 2px 10px rgba(0,191,255,0.1); }
-.reporte-id { color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; min-width: 130px; text-align: center; }
-.reporte-id.rojo { background: #EA4335; }
-.reporte-id.amarillo { background: #FBBC05; color: #231F20; }
-.reporte-id.verde { background: #34A853; }
-.reporte-details { flex: 1; display: flex; gap: 30px; align-items: center; }
-.reporte-info { display: flex; flex-direction: column; gap: 4px; }
-.info-label { font-size: 14px; color: #8F8F8F; }
-.info-value { font-size: 16px; font-weight: 600; color: #231F20; font-style: italic; }
-@media (max-width: 968px) { .estudiante-mis-reportes-content { padding: 20px 15px; } .reporte-item { flex-direction: column; } .reporte-id { width: 100%; } .reporte-details { flex-direction: column; gap: 15px; align-items: flex-start; } }
+.estudiante-mis-reportes-content {
+  padding: 40px 20px;
+  max-width: 1200px;          /* ancho grande como el otro */
+  margin: 0 auto;
+}
 
-.loading, .no-reportes {
+.estudiante-mis-reportes-card {
+  background: #ffffff;
+  border-radius: 24px;        /* antes 20px */
+  padding: 50px;              /* antes 40px */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Título */
+.estudiante-mis-reportes-title {
+  font-size: 40px;            /* antes 32px */
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #231F20;
+  font-family: 'Stag Sans', 'Calibri', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.title-historial {
+  color: #00BFFF;
+}
+
+/* Lista de reportes */
+.reportes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;                  /* antes 20px */
+}
+
+/* Tarjeta de cada reporte */
+.reporte-item {
+  display: flex;
+  gap: 24px;                  /* antes 20px */
+  padding: 22px 24px;         /* más espacioso */
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;        /* antes 12px */
+  background: #f9fafb;
+  transition: all 0.2s ease;
+  align-items: center;
+}
+
+.reporte-item:hover {
+  border-color: #00BFFF;
+  box-shadow: 0 6px 18px rgba(0, 191, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Badge de ID con color según urgencia */
+.reporte-id {
+  color: #ffffff;
+  padding: 12px 26px;
+  border-radius: 999px;       /* pill moderno */
+  font-weight: 700;
+  font-size: 18px;            /* antes 14px */
+  min-width: 150px;           /* antes 130px */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Colores por urgencia */
+.reporte-id.rojo {
+  background: linear-gradient(135deg, #ef5350, #c62828);
+}
+
+.reporte-id.amarillo {
+  background: linear-gradient(135deg, #ffb300, #f9a825);
+  color: #231F20;
+}
+
+.reporte-id.verde {
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+
+.reporte-id.morado {
+  background: linear-gradient(135deg, #ab47bc, #6a1b9a);
+}
+
+/* Detalles del reporte */
+.reporte-details {
+  flex: 1;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.reporte-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Label pequeño arriba (tipo, ubicación) */
+.info-label {
+  font-size: 18px;            /* antes 14px */
+  color: #8F8F8F;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Valor principal (descripción corta) */
+.info-value {
+  font-size: 22px;            /* antes 16px */
+  font-weight: 700;           /* antes 600 */
+  color: #231F20;
+  font-style: italic;
+}
+
+/* Estados de carga / vacío */
+.loading,
+.no-reportes {
   text-align: center;
   padding: 60px 20px;
   color: #8F8F8F;
-  font-size: 18px;
+  font-size: 22px;            /* antes 18px */
 }
 
+/* Error */
 .error-message {
   background: #f8d7da;
   border: 2px solid #EA4335;
   color: #721c24;
   padding: 16px 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 18px;
 }
 
 .retry-button {
-  padding: 8px 16px;
+  padding: 10px 18px;
   background: #EA4335;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .retry-button:hover {
   background: #c62828;
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(198, 40, 40, 0.35);
 }
 
-.reporte-id.morado {
-  background: #9C27B0;
+/* Responsive */
+@media (max-width: 968px) {
+  .estudiante-mis-reportes-content {
+    padding: 20px 15px;
+  }
+
+  .estudiante-mis-reportes-card {
+    padding: 28px;
+  }
+
+  .estudiante-mis-reportes-title {
+    font-size: 30px;
+  }
+
+  .reporte-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .reporte-id {
+    width: 100%;
+    text-align: left;
+  }
+
+  .reporte-details {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .info-label {
+    font-size: 16px;
+  }
+
+  .info-value {
+    font-size: 18px;
+  }
 }

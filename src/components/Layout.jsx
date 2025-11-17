@@ -30,13 +30,6 @@ function Layout({ children, onLogout, userName, userRole, currentView, setCurren
     return 'USUARIO';
   };
 
-  const getBgColor = () => {
-    if (userRole === 'ESTUDIANTE') return '#87CEEB';
-    if (userRole === 'TRABAJADOR') return '#96D2AA';
-    if (userRole === 'ADMIN') return '#FFDD82';
-    return '#87CEEB';
-  };
-
   const getContentBg = () => {
     if (userRole === 'ESTUDIANTE') return '#E3F2FD';
     if (userRole === 'TRABAJADOR') return '#E8F5E9';
@@ -45,26 +38,32 @@ function Layout({ children, onLogout, userName, userRole, currentView, setCurren
   };
 
   const handleMenuClick = (viewId) => {
-    console.log('Cambiando a vista:', viewId);
     setCurrentView(viewId);
   };
 
   return (
     <div className="layout-container">
-      <aside className="sidebar" style={{background: getBgColor()}}>
+      {/* SIDEBAR */}
+      <aside className="sidebar">
         <div className="sidebar-header">
-          <img src="/logo_alerta_utec.png" alt="Alerta UTEC" className="sidebar-logo" />
+          <img
+            src="/logo_alerta_utec.png"
+            alt="Alerta UTEC"
+            className="sidebar-logo"
+          />
         </div>
-        
+
         <div className="sidebar-user">
           <h3 className="user-greeting">
             Hola <span className="user-name">{getRoleName()}</span>
           </h3>
+          {/* Si luego quieres el nombre real:
+          {userName && <p className="user-real-name">{userName}</p>} */}
         </div>
-        
+
         <nav className="sidebar-nav">
-          {getMenuItems().map(item => (
-            <button 
+          {getMenuItems().map((item) => (
+            <button
               key={item.id}
               className={`nav-link ${currentView === item.id ? 'active' : ''}`}
               onClick={() => handleMenuClick(item.id)}
@@ -73,20 +72,18 @@ function Layout({ children, onLogout, userName, userRole, currentView, setCurren
             </button>
           ))}
         </nav>
-        
+
         <button className="logout-button" onClick={onLogout}>
-          🚪 CERRAR SESIÓN
+          <span className="logout-text">Cerrar sesión</span>
+          <span className="logout-icon">⟶</span>
         </button>
-        
-        {userRole === 'ESTUDIANTE' && <img src="/semi_circulos.png" alt="" className="sidebar-decoration" />}
-        {userRole === 'TRABAJADOR' && <img src="/semi_circulos_verdes.png" alt="" className="sidebar-decoration" />}
-        {userRole === 'ADMIN' && <img src="/semi_circulos.png" alt="" className="sidebar-decoration" />}
       </aside>
-      
-      <main className="main-content" style={{background: getContentBg()}}>
-        {userRole === 'ESTUDIANTE' && <img src="/semi_circulos_negros.png" alt="" className="content-decoration" />}
-        {userRole === 'TRABAJADOR' && <img src="/semi_circulos_negros.png" alt="" className="content-decoration" />}
-        {userRole === 'ADMIN' && <img src="/semi_circulos_negros.png" alt="" className="content-decoration" />}
+
+      {/* CONTENIDO PRINCIPAL */}
+      <main className="main-content" style={{ background: getContentBg() }}>
+        {(userRole === 'ESTUDIANTE' ||
+          userRole === 'TRABAJADOR' ||
+          userRole === 'ADMIN')}
         {children}
       </main>
     </div>

@@ -172,7 +172,7 @@ function EstudianteNuevoReporte() {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               className="textarea-input"
-              rows="4"
+              rows="1"
               required
               disabled={isSubmitting}
             />
